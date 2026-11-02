@@ -1,0 +1,10 @@
+{
+  "name": "sistema-biblioteca",
+  "version": "1.0.0",
+  "description": "Sistema de gerenciamento de biblioteca com POO e programação funcional",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node --test"
+  }
+}
