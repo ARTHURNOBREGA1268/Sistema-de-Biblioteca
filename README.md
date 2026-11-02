@@ -74,3 +74,5 @@ O arquivo [`docs/guia-entrega-individual.md`](docs/guia-entrega-individual.md) r
 Use também o [`checklist final da atividade`](docs/checklist-entrega.md) para revisar os itens concluídos e os que cada integrante ainda precisa realizar antes da entrega e da apresentação.
 
 Referências visuais para redesenhar à mão: [diagrama de classes](docs/referencias-visuais/diagrama-classes.png) e [fluxo do relatório de multas](docs/referencias-visuais/fluxo-relatorio-multas.png). Os arquivos Mermaid editáveis também estão em `docs/referencias-visuais/`. As imagens são apenas material de consulta; não devem ser entregues impressas como diagramas manuscritos.
+
+Para ensaiar a apresentação individual, consulte o [guia de perguntas e tópicos de resposta](docs/guia-apresentacao-individual.md). Use-o para praticar explicações próprias e localizar os trechos correspondentes no código, em vez de decorar respostas.
