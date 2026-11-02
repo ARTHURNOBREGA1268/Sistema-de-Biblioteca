@@ -70,3 +70,5 @@ Integrantes do grupo:
 ## Entrega individual manuscrita
 
 O arquivo [`docs/guia-entrega-individual.md`](docs/guia-entrega-individual.md) resume os elementos do diagrama UML, o fluxo funcional do relatório e pontos para estudar as cinco questões. Ele é apenas uma referência: os diagramas e as respostas devem ser feitos individualmente à mão, conforme o enunciado.
+
+Use também o [`checklist final da atividade`](docs/checklist-entrega.md) para revisar os itens concluídos e os que cada integrante ainda precisa realizar antes da entrega e da apresentação.
