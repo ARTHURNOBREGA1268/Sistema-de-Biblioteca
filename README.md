@@ -68,3 +68,7 @@ Preencher antes da entrega com o nome completo de cada integrante (até quatro):
 - Integrante 2: nome completo
 - Integrante 3: nome completo
 - Integrante 4: nome completo
+
+## Entrega individual manuscrita
+
+O arquivo [`docs/guia-entrega-individual.md`](docs/guia-entrega-individual.md) resume os elementos do diagrama UML, o fluxo funcional do relatório e pontos para estudar as cinco questões. Ele é apenas uma referência: os diagramas e as respostas devem ser feitos individualmente à mão, conforme o enunciado.
