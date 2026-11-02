@@ -3,6 +3,16 @@ import assert from 'node:assert/strict'
 import { Livro } from '../src/models/Livro.js'
 import { Usuario } from '../src/models/Usuario.js'
 import { Biblioteca } from '../src/services/Biblioteca.js'
+import {
+  calcularDiasAtraso,
+  calcularMulta,
+  calcularTotalMultasFuncional,
+  calcularTotalMultasImperativo,
+  emprestimosAtrasados,
+  filtrarLivrosPorCategoria,
+  gerarEstatisticas,
+  gerarRelatorioMultas
+} from '../src/functional/relatorios.js'
 
 const criarBiblioteca = () => {
   const biblioteca = new Biblioteca()
@@ -120,4 +130,86 @@ test('modelos rejeitam atributos e datas inválidas', () => {
     dataEmprestimo: '2026-11-10',
     dataPrevistaDevolucao: '2026-11-08'
   }), /não pode anteceder/)
+})
+
+test('calcula dias de atraso e multa sem gerar cobrança antes do atraso', () => {
+  assert.equal(calcularDiasAtraso('2026-11-08', '2026-11-08'), 0)
+  assert.equal(calcularDiasAtraso('2026-11-08', '2026-11-09'), 1)
+  assert.equal(calcularDiasAtraso('2026-11-08', '2026-11-11'), 3)
+  assert.equal(calcularMulta(3), 6)
+  assert.equal(calcularMulta(0), 0)
+  assert.throws(() => calcularMulta(-1), /inteiro não negativo/)
+})
+
+test('filtra livros por categoria sem alterar a coleção original', () => {
+  const livros = [
+    new Livro({ id: 'L1', titulo: 'Algoritmos', autor: 'Ana', categoria: 'Computação' }),
+    new Livro({ id: 'L2', titulo: 'Contos', autor: 'Bia', categoria: 'Ficção' }),
+    new Livro({ id: 'L3', titulo: 'Redes', autor: 'Caio', categoria: 'Computação' })
+  ]
+  const resultado = filtrarLivrosPorCategoria(livros, 'Computação')
+
+  assert.deepEqual(resultado.map((livro) => livro.id), ['L1', 'L3'])
+  assert.equal(livros.length, 3)
+  assert.notEqual(resultado, livros)
+})
+
+test('relatório usa empréstimos ativos atrasados e calcula multas com filter, map e reduce', () => {
+  const biblioteca = criarBiblioteca()
+  biblioteca.cadastrarLivro(new Livro({ id: 'L2', titulo: 'Estruturas', autor: 'Bia', categoria: 'Computação' }))
+  biblioteca.cadastrarLivro(new Livro({ id: 'L3', titulo: 'Poesia', autor: 'Duda', categoria: 'Literatura' }))
+  biblioteca.registrarEmprestimo({
+    id: 'E1', idLivro: 'L1', idUsuario: 'U1', dataEmprestimo: '2026-11-01', dataPrevistaDevolucao: '2026-11-08'
+  })
+  biblioteca.registrarEmprestimo({
+    id: 'E2', idLivro: 'L2', idUsuario: 'U2', dataEmprestimo: '2026-11-02', dataPrevistaDevolucao: '2026-11-10'
+  })
+  biblioteca.registrarEmprestimo({
+    id: 'E3', idLivro: 'L3', idUsuario: 'U1', dataEmprestimo: '2026-11-03', dataPrevistaDevolucao: '2026-11-04'
+  })
+  biblioteca.registrarDevolucao('E3', '2026-11-05')
+  const emprestimos = biblioteca.consultarEmprestimos()
+  const copiaAntes = [...emprestimos]
+  const atrasados = emprestimosAtrasados(emprestimos, '2026-11-11')
+  const relatorio = gerarRelatorioMultas(emprestimos, '2026-11-11')
+
+  assert.deepEqual(atrasados.map((emprestimo) => emprestimo.id), ['E1', 'E2'])
+  assert.deepEqual(relatorio.itens.map((item) => item.multa), [6, 2])
+  assert.equal(relatorio.total, 8)
+  assert.deepEqual(emprestimos, copiaAntes)
+})
+
+test('estatísticas agregam categorias, usuários, empréstimos e multas', () => {
+  const biblioteca = criarBiblioteca()
+  biblioteca.cadastrarLivro(new Livro({ id: 'L2', titulo: 'Estruturas', autor: 'Bia', categoria: 'Computação' }))
+  biblioteca.registrarEmprestimo({
+    id: 'E1', idLivro: 'L1', idUsuario: 'U1', dataEmprestimo: '2026-11-01', dataPrevistaDevolucao: '2026-11-08'
+  })
+  biblioteca.registrarEmprestimo({
+    id: 'E2', idLivro: 'L2', idUsuario: 'U2', dataEmprestimo: '2026-11-02', dataPrevistaDevolucao: '2026-11-10'
+  })
+
+  const estatisticas = gerarEstatisticas(
+    biblioteca.consultarLivros(),
+    biblioteca.consultarUsuarios(),
+    biblioteca.consultarEmprestimos(),
+    '2026-11-11'
+  )
+
+  assert.deepEqual(estatisticas.livrosPorCategoria, { 'Computação': 2 })
+  assert.deepEqual(estatisticas.emprestimosPorUsuario, { U1: 1, U2: 1 })
+  assert.equal(estatisticas.emprestimosAtivos, 2)
+  assert.equal(estatisticas.emprestimosAtivosAtrasados, 2)
+  assert.equal(estatisticas.totalMultas, 8)
+})
+
+test('versões imperativa e funcional calculam totais equivalentes', () => {
+  const biblioteca = criarBiblioteca()
+  biblioteca.registrarEmprestimo({
+    id: 'E1', idLivro: 'L1', idUsuario: 'U1', dataEmprestimo: '2026-11-01', dataPrevistaDevolucao: '2026-11-08'
+  })
+  const emprestimos = biblioteca.consultarEmprestimos()
+
+  assert.equal(calcularTotalMultasImperativo(emprestimos, '2026-11-11'), 6)
+  assert.equal(calcularTotalMultasFuncional(emprestimos, '2026-11-11'), 6)
 })

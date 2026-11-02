@@ -34,8 +34,19 @@ npm test
 - Validação de identificadores e datas.
 - Datas informadas no formato `AAAA-MM-DD`.
 - Modelos com atributos encapsulados; a devolução cria uma nova instância de empréstimo.
+- Relatório de multas de empréstimos ativos atrasados com `filter`, `map` e `reduce`.
+- Estatísticas de livros por categoria, empréstimos por usuário, empréstimos ativos, atrasados e multas totais.
+- Comparação do total de multas nas versões imperativa e funcional.
 
 Os dados são mantidos em memória e são apagados ao encerrar o programa.
+
+## Regras de atraso
+
+A data de referência deve estar no formato `AAAA-MM-DD`. Não há atraso na data prevista; a multa de R$ 2,00 por dia começa a contar no dia seguinte. O relatório considera apenas empréstimos ainda ativos.
+
+## Demonstração
+
+`npm start` executa um exemplo e imprime o relatório de multas e as estatísticas em JSON.
 
 ## Integrantes
 
