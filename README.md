@@ -62,12 +62,10 @@ A data de referência deve estar no formato `AAAA-MM-DD`. Não há atraso na dat
 
 ## Integrantes
 
-Preencher antes da entrega com o nome completo de cada integrante (até quatro):
+Integrantes do grupo:
 
-- Integrante 1: nome completo
-- Integrante 2: nome completo
-- Integrante 3: nome completo
-- Integrante 4: nome completo
+- Arthur Nobrega Martins
+- Hygor Gabriel Alves Montenegro
 
 ## Entrega individual manuscrita
 
