@@ -74,7 +74,17 @@ Compare `calcularTotalMultasImperativo` (laço, condicionais e acumulador) com `
 
 ### E) Dois usuários tentando retirar o mesmo livro
 
-Explique que ambos poderiam observar o livro disponível antes de qualquer registro e tentar emprestá-lo. Neste programa, as chamadas síncronas na mesma instância JavaScript são executadas uma por vez, e a validação de disponibilidade ocorre antes do registro. Funções puras e imutabilidade ajudam a reduzir alterações inesperadas, mas, por si sós, não garantem exclusão mútua em uma versão concorrente, distribuída ou com vários processos. Nessa situação, seria necessário proteger a verificação e a gravação como uma operação atômica, por exemplo com transação ou mecanismo de bloqueio apropriado.
+No programa atual, `registrarEmprestimo` verifica a disponibilidade e registra o empréstimo em uma chamada síncrona, sem ceder o controle no meio. Na mesma instância e processo Node.js, uma chamada termina antes de outra começar: a primeira pode ser aceita e a seguinte deve encontrar o livro indisponível. Funções puras e imutabilidade, sozinhas, não garantem exclusão mútua em uma futura implementação concorrente, distribuída ou com estado compartilhado entre processos. Nesse cenário, a verificação e a gravação precisariam ser protegidas como uma operação atômica, por exemplo por transação ou mecanismo de bloqueio apropriado.
+
+## Pontos para formular as respostas com suas próprias palavras
+
+Use estes pontos para estudar; cada integrante deve construir sua própria resposta manuscrita, citando o código e demonstrando que o compreende.
+
+- **A:** `calcularMulta(3)` retorna sempre `6` com o valor diário padrão de `2`. A função depende dos parâmetros, não altera coleções nem consulta estado global; por isso, o resultado pode substituir a chamada para aquelas entradas.
+- **B:** `Biblioteca.registrarEmprestimo` consulta os dados e, quando válido, grava o objeto no mapa privado `#emprestimos`. O estado observável da biblioteca muda; chamadas posteriores podem ter outro resultado para o mesmo livro.
+- **C:** os modelos guardam seus campos em propriedades privadas e congelam a instância; a devolução cria outro `Emprestimo`. Consultas retornam novos arrays e relatórios produzem novos objetos. A `Biblioteca`, por outro lado, precisa atualizar seus mapas nas operações de gerenciamento: a imutabilidade foi aplicada sobretudo aos modelos e ao processamento funcional, não significa que toda a aplicação seja imutável.
+- **D:** a versão imperativa acumula o total em uma variável e controla as etapas com `for` e `if`; a versão funcional descreve a seleção, transformação e soma com `filter`, `map` e `reduce`. Ambas calculam o mesmo total, confirmado pelos testes. Compare a clareza para esse caso e o custo de localizar erros em cada abordagem.
+- **E:** no fluxo síncrono atual, as chamadas não intercalam a verificação e a gravação na mesma instância: uma retirada deve ser registrada antes da próxima ser avaliada. Se o sistema passar a operar com processos ou serviços concorrentes compartilhando os dados, funções puras e imutabilidade não substituem uma transação ou bloqueio atômico.
 
 ## Conferência antes de entregar
 
