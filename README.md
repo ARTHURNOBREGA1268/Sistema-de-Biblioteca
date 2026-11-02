@@ -48,7 +48,7 @@ A data de referência deve estar no formato `AAAA-MM-DD`. Não há atraso na dat
 
 ## Demonstração
 
-`npm start` executa um exemplo e imprime o relatório de multas e as estatísticas em JSON.
+`npm start` abre um menu de terminal para cadastrar e consultar livros e usuários, registrar empréstimos e devoluções e gerar relatórios. Os identificadores são gerados automaticamente e exibidos após o cadastro. Os dados existem apenas durante a execução: ao sair, serão perdidos.
 
 ## Operações de relatório
 

@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { spawnSync } from 'node:child_process'
 import { Livro } from '../src/models/Livro.js'
 import { Usuario } from '../src/models/Usuario.js'
 import { Biblioteca } from '../src/services/Biblioteca.js'
@@ -227,4 +228,15 @@ test('versões imperativa e funcional calculam totais equivalentes', () => {
 test('relatórios rejeitam datas de referência inválidas', () => {
   assert.throws(() => emprestimosAtrasados([], '2026-02-30'), /Data inválida/)
   assert.throws(() => gerarRelatorioMultas([], '11-11-2026'), /Data inválida/)
+})
+
+test('interface de terminal exibe o menu e encerra pela opção de saída', () => {
+  const processo = spawnSync(process.execPath, ['src/index.js'], {
+    input: '0\n',
+    encoding: 'utf8'
+  })
+
+  assert.equal(processo.status, 0, processo.stderr)
+  assert.match(processo.stdout, /Sistema de Biblioteca/)
+  assert.match(processo.stdout, /10\. Filtrar livros por categoria/)
 })
