@@ -92,6 +92,31 @@ test('devolução cria um novo empréstimo devolvido e libera o livro', () => {
   assert.equal(biblioteca.livroDisponivel('L1'), true)
 })
 
+test('permite emprestar novamente o livro depois da devolução', () => {
+  const biblioteca = criarBiblioteca()
+  biblioteca.registrarEmprestimo({
+    id: 'E1',
+    idLivro: 'L1',
+    idUsuario: 'U1',
+    dataEmprestimo: '2026-11-01',
+    dataPrevistaDevolucao: '2026-11-08'
+  })
+  biblioteca.registrarDevolucao('E1', '2026-11-07')
+
+  const novoEmprestimo = biblioteca.registrarEmprestimo({
+    id: 'E2',
+    idLivro: 'L1',
+    idUsuario: 'U2',
+    dataEmprestimo: '2026-11-08',
+    dataPrevistaDevolucao: '2026-11-15'
+  })
+
+  assert.equal(novoEmprestimo.id, 'E2')
+  assert.equal(novoEmprestimo.usuario.id, 'U2')
+  assert.equal(biblioteca.livroDisponivel('L1'), false)
+  assert.equal(biblioteca.consultarEmprestimos().length, 2)
+})
+
 test('recusa empréstimo duplicado e devolução inválida', () => {
   const biblioteca = criarBiblioteca()
   biblioteca.cadastrarLivro(new Livro({ id: 'L2', titulo: 'Estruturas', autor: 'Bia', categoria: 'Computação' }))
