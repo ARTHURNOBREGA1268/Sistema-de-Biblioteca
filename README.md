@@ -21,10 +21,12 @@ npm test
 ## Estrutura
 
 - `src/models`: entidades Livro, Usuario e Emprestimo.
-- `src/services`: gerenciamento e regras de negócio da Biblioteca.
-- `src/functional`: funções puras e relatórios com operações funcionais.
+- `src/services/Biblioteca.js`: cadastro, consulta, empréstimos, devoluções e disponibilidade.
+- `src/functional/relatorios.js`: cálculos puros, filtragem, transformação e agregação de relatórios.
 - `src/index.js`: ponto de entrada do programa.
 - `test`: testes automatizados com `node:test`.
+
+As operações que alteram o estado ficam na classe `Biblioteca`. Os modelos encapsulam seus atributos; devoluções substituem o empréstimo por uma nova instância. Cálculos e relatórios recebem seus dados e a data de referência como parâmetros, sem alterar as coleções originais.
 
 ## Funcionalidades implementadas
 
@@ -48,6 +50,21 @@ A data de referência deve estar no formato `AAAA-MM-DD`. Não há atraso na dat
 
 `npm start` executa um exemplo e imprime o relatório de multas e as estatísticas em JSON.
 
+## Operações de relatório
+
+- `filtrarLivrosPorCategoria(livros, categoria)` retorna uma nova coleção filtrada.
+- `calcularDiasAtraso(dataPrevista, dataReferencia)` calcula os dias completos após o vencimento.
+- `calcularMulta(diasAtraso, valorDiario)` calcula a multa sem efeitos colaterais; o valor diário padrão é R$ 2,00.
+- `emprestimosAtrasados(emprestimos, dataReferencia)` seleciona empréstimos ativos vencidos.
+- `gerarRelatorioMultas(emprestimos, dataReferencia)` retorna detalhamento e total, usando `filter`, `map` e `reduce`.
+- `gerarEstatisticas(livros, usuarios, emprestimos, dataReferencia)` agrega as estatísticas exigidas.
+- `calcularTotalMultasImperativo` e `calcularTotalMultasFuncional` permitem comparar os paradigmas.
+
 ## Integrantes
 
-- Preencher com os nomes completos dos integrantes.
+Preencher antes da entrega com o nome completo de cada integrante (até quatro):
+
+- Integrante 1: nome completo
+- Integrante 2: nome completo
+- Integrante 3: nome completo
+- Integrante 4: nome completo

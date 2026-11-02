@@ -154,6 +154,16 @@ test('filtra livros por categoria sem alterar a coleção original', () => {
   assert.notEqual(resultado, livros)
 })
 
+test('consultas retornam coleções independentes e cálculos puros são repetíveis', () => {
+  const biblioteca = criarBiblioteca()
+  const livrosConsultados = biblioteca.consultarLivros()
+  livrosConsultados.pop()
+
+  assert.equal(biblioteca.consultarLivros().length, 1)
+  assert.equal(calcularMulta(4), calcularMulta(4))
+  assert.equal(calcularDiasAtraso('2026-11-08', '2026-11-12'), calcularDiasAtraso('2026-11-08', '2026-11-12'))
+})
+
 test('relatório usa empréstimos ativos atrasados e calcula multas com filter, map e reduce', () => {
   const biblioteca = criarBiblioteca()
   biblioteca.cadastrarLivro(new Livro({ id: 'L2', titulo: 'Estruturas', autor: 'Bia', categoria: 'Computação' }))
@@ -212,4 +222,9 @@ test('versões imperativa e funcional calculam totais equivalentes', () => {
 
   assert.equal(calcularTotalMultasImperativo(emprestimos, '2026-11-11'), 6)
   assert.equal(calcularTotalMultasFuncional(emprestimos, '2026-11-11'), 6)
+})
+
+test('relatórios rejeitam datas de referência inválidas', () => {
+  assert.throws(() => emprestimosAtrasados([], '2026-02-30'), /Data inválida/)
+  assert.throws(() => gerarRelatorioMultas([], '11-11-2026'), /Data inválida/)
 })
