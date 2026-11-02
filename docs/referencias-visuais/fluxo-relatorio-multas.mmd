@@ -1,0 +1,15 @@
+flowchart TD
+    A([Início]) --> B[Entrada: coleção de empréstimos + data de referência]
+    B --> C[gerarRelatorioMultas]
+    C --> D[emprestimosAtrasados: valida referência com converterData]
+    D --> E{filter: ativo e data prevista anterior à referência?}
+    E -->|Sim| F[Empréstimo atrasado]
+    E -->|Não| G[Ignorar empréstimo]
+    F --> H[map: calcular dias de atraso]
+    H --> I[calcularMulta: dias × R$ 2,00]
+    I --> J[Criar item com livro, usuário, dias e multa]
+    G --> K[Lista de itens transformados]
+    J --> K
+    K --> L[reduce: somar as multas]
+    L --> M[Saída: data de referência, itens e total]
+    M --> N([Fim])

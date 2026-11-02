@@ -2,6 +2,8 @@
 
 Este guia serve para conferir os elementos dos diagramas e relacionar as questões ao projeto implementado. Não substitui a entrega: cada integrante deve desenhar os dois diagramas e escrever as cinco respostas individualmente, à mão, em papel A4 branco, sem pauta ou quadriculado, identificando cada folha com o nome completo.
 
+Há duas imagens de referência no projeto para ajudar a visualizar as relações e o fluxo: [`diagrama-classes.png`](referencias-visuais/diagrama-classes.png) e [`fluxo-relatorio-multas.png`](referencias-visuais/fluxo-relatorio-multas.png). Use-as somente para estudar e redesenhar os diagramas à mão; não as imprima para entregar.
+
 ## Diagrama 1 — Classes UML
 
 Desenhe quatro caixas com o nome da classe, atributos e métodos relevantes. Use `-` para indicar atributos privados e `+` para indicar operações públicas.

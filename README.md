@@ -72,3 +72,5 @@ Integrantes do grupo:
 O arquivo [`docs/guia-entrega-individual.md`](docs/guia-entrega-individual.md) resume os elementos do diagrama UML, o fluxo funcional do relatório e pontos para estudar as cinco questões. Ele é apenas uma referência: os diagramas e as respostas devem ser feitos individualmente à mão, conforme o enunciado.
 
 Use também o [`checklist final da atividade`](docs/checklist-entrega.md) para revisar os itens concluídos e os que cada integrante ainda precisa realizar antes da entrega e da apresentação.
+
+Referências visuais para redesenhar à mão: [diagrama de classes](docs/referencias-visuais/diagrama-classes.png) e [fluxo do relatório de multas](docs/referencias-visuais/fluxo-relatorio-multas.png). Os arquivos Mermaid editáveis também estão em `docs/referencias-visuais/`. As imagens são apenas material de consulta; não devem ser entregues impressas como diagramas manuscritos.

@@ -1,0 +1,57 @@
+classDiagram
+    class Livro {
+        -id
+        -titulo
+        -autor
+        -categoria
+        +constructor(dados)
+        +id
+        +titulo
+        +autor
+        +categoria
+    }
+
+    class Usuario {
+        -id
+        -nome
+        -matricula
+        +constructor(dados)
+        +id
+        +nome
+        +matricula
+    }
+
+    class Emprestimo {
+        -id
+        -livro
+        -usuario
+        -dataEmprestimo
+        -dataPrevistaDevolucao
+        -dataEfetivaDevolucao
+        +constructor(dados)
+        +ativo
+        +devolver(data)
+    }
+
+    class Biblioteca {
+        -livros: Map
+        -usuarios: Map
+        -emprestimos: Map
+        +cadastrarLivro(livro)
+        +cadastrarUsuario(usuario)
+        +consultarLivro(id)
+        +consultarUsuario(id)
+        +consultarLivros()
+        +consultarUsuarios()
+        +consultarEmprestimo(id)
+        +consultarEmprestimos()
+        +livroDisponivel(idLivro)
+        +registrarEmprestimo(dados)
+        +registrarDevolucao(idEmprestimo, data)
+    }
+
+    Biblioteca "1" o-- "0..*" Livro : mantém
+    Biblioteca "1" o-- "0..*" Usuario : mantém
+    Biblioteca "1" o-- "0..*" Emprestimo : mantém
+    Emprestimo "0..*" --> "1" Livro : refere-se a
+    Emprestimo "0..*" --> "1" Usuario : responsável
