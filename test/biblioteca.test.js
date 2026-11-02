@@ -94,6 +94,7 @@ test('devolução cria um novo empréstimo devolvido e libera o livro', () => {
 
 test('recusa empréstimo duplicado e devolução inválida', () => {
   const biblioteca = criarBiblioteca()
+  biblioteca.cadastrarLivro(new Livro({ id: 'L2', titulo: 'Estruturas', autor: 'Bia', categoria: 'Computação' }))
   biblioteca.registrarEmprestimo({
     id: 'E1',
     idLivro: 'L1',
@@ -104,11 +105,11 @@ test('recusa empréstimo duplicado e devolução inválida', () => {
 
   assert.throws(() => biblioteca.registrarEmprestimo({
     id: 'E1',
-    idLivro: 'L1',
+    idLivro: 'L2',
     idUsuario: 'U1',
     dataEmprestimo: '2026-11-01',
     dataPrevistaDevolucao: '2026-11-08'
-  }), /Livro indisponível|identificador/)
+  }), /identificador/)
   assert.throws(() => biblioteca.registrarDevolucao('E9', '2026-11-07'), /Empréstimo não encontrado/)
 })
 
@@ -188,6 +189,23 @@ test('relatório usa empréstimos ativos atrasados e calcula multas com filter, 
   assert.deepEqual(relatorio.itens.map((item) => item.multa), [6, 2])
   assert.equal(relatorio.total, 8)
   assert.deepEqual(emprestimos, copiaAntes)
+})
+
+test('não multa empréstimo na data prevista e exclui devolvido após o vencimento', () => {
+  const biblioteca = criarBiblioteca()
+  biblioteca.cadastrarLivro(new Livro({ id: 'L2', titulo: 'Estruturas', autor: 'Bia', categoria: 'Computação' }))
+  biblioteca.registrarEmprestimo({
+    id: 'E1', idLivro: 'L1', idUsuario: 'U1', dataEmprestimo: '2026-11-01', dataPrevistaDevolucao: '2026-11-11'
+  })
+  biblioteca.registrarEmprestimo({
+    id: 'E2', idLivro: 'L2', idUsuario: 'U2', dataEmprestimo: '2026-11-01', dataPrevistaDevolucao: '2026-11-08'
+  })
+  biblioteca.registrarDevolucao('E2', '2026-11-10')
+
+  const relatorio = gerarRelatorioMultas(biblioteca.consultarEmprestimos(), '2026-11-11')
+
+  assert.deepEqual(relatorio.itens, [])
+  assert.equal(relatorio.total, 0)
 })
 
 test('estatísticas agregam categorias, usuários, empréstimos e multas', () => {

@@ -66,12 +66,12 @@ export class Biblioteca {
       throw new Error(`Usuário não encontrado: ${idUsuario}`)
     }
 
-    if (!this.livroDisponivel(livro.id)) {
-      throw new Error(`Livro indisponível: ${livro.id}`)
-    }
-
     if (this.#emprestimos.has(String(id))) {
       throw new Error(`Já existe um empréstimo com o identificador ${id}`)
+    }
+
+    if (!this.livroDisponivel(livro.id)) {
+      throw new Error(`Livro indisponível: ${livro.id}`)
     }
 
     const emprestimo = new Emprestimo({
